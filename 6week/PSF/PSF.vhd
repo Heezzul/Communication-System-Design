@@ -39,8 +39,15 @@ begin
     process(nrst, clk)
     begin
         if nrst = '0' then
-           
-           x8d <= (others => '0');
+
+            x1d <= (others => '0');
+            x2d <= (others => '0');
+            x3d <= (others => '0');
+            x4d <= (others => '0');
+            x5d <= (others => '0');
+            x6d <= (others => '0');            
+            x7d <= (others => '0');
+            x8d <= (others => '0');
         elsif clk'event and clk = '1' then
             x1d <= x0d;
             x2d <= x1d;
