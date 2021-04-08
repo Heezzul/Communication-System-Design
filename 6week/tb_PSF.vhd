@@ -7,13 +7,34 @@ end tb_PSF;
 
 architecture behavior of tb_PSF is
 
+    component SimplePSF9 
+        port(
+            nrst : in std_logic;
+            clk : in std_logic;
+            PSFin : in std_logic_vector(9 downto 0);
+            PSFout : out std_logic_vector(9 downto 0)
+        );
+    end component;
 
+    signal nrst : std_logic;
+    signal clk : std_logic;
+    signal impulse, impout : std_logic_vector(9 downto 0);
+
+    begin
+
+        iPSF9 : SimplePSF9
+        port map(
+            nrst => nrst,
+            clk => clk,
+            PSFin => impulse,
+            PSFout => impout
+        );
    
         clkp : process
         begin
-            mclk <= '1';
+            clk <= '1';
             wait for 20 ns;
-            mclk <= '0';
+            clk <= '0';
             wait for 20 ns;
         end process;
 
@@ -27,12 +48,12 @@ architecture behavior of tb_PSF is
 
         inp : process
         begin
-            xin <= "0000000000";
-            wait for 140ns;
-            xin <= "0111111111";
-            wait for 40ns ;
-            xin <= "0000000000";
-            wait
+            impulse <= "0000000000";
+            wait for 140 ns;
+            impulse <= "0111111111";
+            wait for 80 ns ;
+            impulse <= "0000000000";
+            wait;
         end process;
 
 end behavior;        
