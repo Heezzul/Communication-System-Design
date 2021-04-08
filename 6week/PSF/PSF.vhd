@@ -12,7 +12,7 @@ entity SimplePSF9 is
     );
 end SimplePSF9;
 
-architecture arch of SimplePSF9 is 
+architecture behavior of SimplePSF9 is 
 
     constant h0 :  std_logic_vector(9 downto 0):= conv_std_logic_vector(-13,10);
     constant h1 :  std_logic_vector(9 downto 0):= conv_std_logic_vector(65,10);
@@ -35,11 +35,11 @@ architecture arch of SimplePSF9 is
     
 begin
    
-    x0d <= PSFin;
+    
     process(nrst, clk)
     begin
         if nrst = '0' then
-
+            x0d <= (others => '0');
             x1d <= (others => '0');
             x2d <= (others => '0');
             x3d <= (others => '0');
@@ -48,7 +48,9 @@ begin
             x6d <= (others => '0');            
             x7d <= (others => '0');
             x8d <= (others => '0');
+            PSFout <= (others => '0');
         elsif clk'event and clk = '1' then
+	        x0d <= PSFin;
             x1d <= x0d;
             x2d <= x1d;
             x3d <= x2d;
@@ -57,6 +59,7 @@ begin
             x6d <= x5d;
             x7d <= x6d;
             x8d <= x7d;
+            PSFout <= sumall(18 downto 9);
         end if;
     end process;
 
@@ -79,7 +82,7 @@ begin
     sum01235678 <= sum0123 + sum5678;
     sumall <= sum01235678 + x4dh4;
 
-    PSFout <= sumall(18 downto 9);
+  
        
 
-end arch;
+end behavior;

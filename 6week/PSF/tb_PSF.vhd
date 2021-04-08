@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
 
 entity tb_PSF is
@@ -51,7 +52,7 @@ architecture behavior of tb_PSF is
             impulse <= "0000000000";
             wait for 140 ns;
             impulse <= "0111111111";
-            wait for 80 ns ;
+            wait for 40 ns ;
             impulse <= "0000000000";
             wait;
         end process;
