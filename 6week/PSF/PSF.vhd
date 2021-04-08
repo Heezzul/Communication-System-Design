@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
 
 entity SimplePSF9 is
@@ -13,15 +14,15 @@ end SimplePSF9;
 
 architecture arch of SimplePSF9 is 
 
-    constant h0 :  std_logic-vector(9 downto 0):= conv_std_logic_vector(-13,10);
-    constant h1 :  std_logic-vector(9 downto 0):= conv_std_logic_vector(65,10);
-    constant h2 :  std_logic-vector(9 downto 0):= conv_std_logic_vector(161,10);
-    constant h3 :  std_logic-vector(9 downto 0):= conv_std_logic_vector(239,10);
-    constant h4 :  std_logic-vector(9 downto 0):= conv_std_logic_vector(270,10);
-    constant h5 :  std_logic-vector(9 downto 0):= conv_std_logic_vector(239,10);
-    constant h6 :  std_logic-vector(9 downto 0):= conv_std_logic_vector(161,10);
-    constant h7 :  std_logic-vector(9 downto 0):= conv_std_logic_vector(65,10);
-    constant h8 :  std_logic-vector(9 downto 0):= conv_std_logic_vector(-13,10);
+    constant h0 :  std_logic_vector(9 downto 0):= conv_std_logic_vector(-13,10);
+    constant h1 :  std_logic_vector(9 downto 0):= conv_std_logic_vector(65,10);
+    constant h2 :  std_logic_vector(9 downto 0):= conv_std_logic_vector(161,10);
+    constant h3 :  std_logic_vector(9 downto 0):= conv_std_logic_vector(239,10);
+    constant h4 :  std_logic_vector(9 downto 0):= conv_std_logic_vector(270,10);
+    constant h5 :  std_logic_vector(9 downto 0):= conv_std_logic_vector(239,10);
+    constant h6 :  std_logic_vector(9 downto 0):= conv_std_logic_vector(161,10);
+    constant h7 :  std_logic_vector(9 downto 0):= conv_std_logic_vector(65,10);
+    constant h8 :  std_logic_vector(9 downto 0):= conv_std_logic_vector(-13,10);
     
 
     signal x0d, x1d, x2d, x3d, x4d, x5d, x6d, x7d, x8d : std_logic_vector(9 downto 0);
@@ -35,7 +36,7 @@ architecture arch of SimplePSF9 is
 begin
    
     x0d <= PSFin;
-    process(nrst, mclk)
+    process(nrst, clk)
     begin
         if nrst = '0' then
            
@@ -55,15 +56,23 @@ begin
     x0dh0 <= x0d * h0;
     x1dh1 <= x1d * h1;
     x2dh2 <= x2d * h2;
-    x3dh0 <= x3d * h3;
-    x4dh0 <= x4d * h4;
-    x5dh0 <= x5d * h5;
-    x6dh0 <= x6d * h6;
-    x7dh0 <= x7d * h7;
-    x8dh0 <= x8d * h8;     
-    sum <= x0dh0 + x1dh1 + x2dh2 + x3dh3 + x4dh4 + x5dh5 + x6dh6 + x7dh7 + x8dh8
+    x3dh3 <= x3d * h3;
+    x4dh4 <= x4d * h4;
+    x5dh5 <= x5d * h5;
+    x6dh6 <= x6d * h6;
+    x7dh7 <= x7d * h7;
+    x8dh8 <= x8d * h8;     
+   
+    sum01 <= x0dh0 + x1dh1;
+    sum23 <= x2dh2 + x3dh3;
+    sum56 <= x5dh5 + x6dh6;
+    sum78 <= x7dh7 + x8dh8;
+    sum0123 <= sum01 + sum23;
+    sum5678 <= sum56 + sum78;
+    sum01235678 <= sum0123 + sum5678;
+    sumall <= sum01235678 + x4dh4;
 
-    PSFout <= sum(18 downto 9);
+    PSFout <= sumall(18 downto 9);
        
 
 end arch;
