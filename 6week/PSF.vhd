@@ -63,7 +63,7 @@ begin
     x8dh0 <= x8d * h8;     
     sum <= x0dh0 + x1dh1 + x2dh2 + x3dh3 + x4dh4 + x5dh5 + x6dh6 + x7dh7 + x8dh8
 
-    PSHout <= sum(18 downto 9);
+    PSFout <= sum(18 downto 9);
        
 
 end arch;
