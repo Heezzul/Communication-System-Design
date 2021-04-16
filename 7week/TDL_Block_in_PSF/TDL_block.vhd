@@ -1,23 +1,24 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
 
-LIBRARY work;
-USE work.mypackage.all;
+library work;
+use work.mypackage.all;
 
-entity tdl_blcok is
+entity tdl_block is
     port(
         nrst : in std_logic;
         clk : in std_logic;
         xin : in std_logic_vector(9 downto 0);
-        xvector : out std_10bit_array(16 downto 0)
+        xvector : out std_10b_array(16 downto 0)
     );
-end tdl_blcok;
+end tdl_block;
 
-architecture behavior of SimplePSF9 is 
+architecture behavior of tdl_block is 
 
 
-    signal xv :  std_10bit_array(16 downto 0);
+    signal xv : std_10b_array(16 downto 0);
       
     
     
