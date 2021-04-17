@@ -22,8 +22,8 @@ architecture behavior of psf17T is
            nrst : in std_logic;
            clk : in std_logic;
            xvector : in std_10b_array(16 downto 0);
-           cvector : in std_10_array(16 downto 0);
-           psfout : out std_logic_vector(9 downto 0) 
+           cvector : in std_10b_array(16 downto 0);
+           sumout : out std_logic_vector(9 downto 0) 
         );
     end component;
 
@@ -57,7 +57,7 @@ architecture behavior of psf17T is
         );
 
         icvgen : cvgen
-        port mpa(
+        port map(
             cvector => cvector
         );
 
@@ -67,7 +67,7 @@ architecture behavior of psf17T is
             clk => clk,
             xvector => xvector,
             cvector => cvector,
-            sumout => psfout
+            sumout => fout
         ); 
         
         
