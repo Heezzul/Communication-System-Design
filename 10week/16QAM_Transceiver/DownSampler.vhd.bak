@@ -40,7 +40,7 @@ begin
 
         
     end process;
-    sel <='1' when cnt = 4 else '0';
+    sel <='1' when cnt = 5 else '0';
 
     process(nrst, clk4x)
     begin     

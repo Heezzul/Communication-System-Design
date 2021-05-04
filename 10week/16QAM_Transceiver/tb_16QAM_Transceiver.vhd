@@ -2,10 +2,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 
-entity tb_Tx_Rx_PSF is
-end tb_Tx_Rx_PSF;
+entity tb_16QAM_Transceiver is
+end tb_16QAM_Transceiver;
 
-architecture behavior of tb_Tx_Rx_PSF is
+architecture behavior of tb_16QAM_Transceiver is
 
 
     component clockgen port(
@@ -91,6 +91,24 @@ architecture behavior of tb_Tx_Rx_PSF is
     );
     end component;
 
+    component dnconv 
+    port(
+    clk : in std_logic;
+    nrst : in std_logic;
+    base_r,base_i : in std_logic_vector(9 downto 0);
+    pass_r, pass_i : out std_logic_vector(9 downto 0)
+    );
+    end component;
+
+    component upconv 
+    port(
+    clk : in std_logic;
+    nrst : in std_logic;
+    base_r,base_i : in std_logic_vector(9 downto 0);
+    pass_r, pass_i : out std_logic_vector(9 downto 0)
+    );
+    end component;
+
     
 
     signal nrst, mclk : std_logic;
@@ -111,6 +129,12 @@ architecture behavior of tb_Tx_Rx_PSF is
 
     signal psf_out_r : std_logic_vector(9 downto 0);
     signal psf_out_i : std_logic_vector(9 downto 0);
+
+    signal upreal : std_logic_vector(9 downto 0);
+    signal upimag :  std_logic_vector(9 downto 0);
+
+    signal dnreal : std_logic_vector(9 downto 0);
+    signal dnimag :  std_logic_vector(9 downto 0);
 
     signal psf_out_r_2 : std_logic_vector(9 downto 0);
     signal psf_out_i_2 : std_logic_vector(9 downto 0); 
@@ -194,11 +218,32 @@ architecture behavior of tb_Tx_Rx_PSF is
             fout => psf_out_r            
         );
 
+        iup : upconv port map(
+            nrst => nrst,
+            clk => clk8x,
+            base_r => psf_out_r,
+            base_i => psf_out_i,
+    
+            pass_r => upreal,
+            pass_i => upimag
+        );
+
+        
+        idn : dnconv port map(
+            nrst => nrst,
+            clk => clk8x,
+            base_r => upreal,
+            base_i => upimag,
+    
+            pass_r => dnreal,
+            pass_i => dnimag
+        );
+
         ipsf2_i : psf65T
         port map(
             nrst => nrst,
             clk => clk8x,
-            xin => psf_out_i,           
+            xin => dnimag,           
             fout => psf_out_i_2           
         );
 
@@ -206,7 +251,7 @@ architecture behavior of tb_Tx_Rx_PSF is
         port map(
             nrst => nrst,
             clk => clk8x,
-            xin => psf_out_r,
+            xin => dnreal,
             fout => psf_out_r_2            
         );
                  
